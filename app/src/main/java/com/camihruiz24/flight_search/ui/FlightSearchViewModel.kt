@@ -30,11 +30,12 @@ class FlightSearchViewModel @Inject internal constructor(
     private val airportsRepository: AirportsRepository,
 ) : ViewModel() {
     private lateinit var completeAirportList: List<Airport>
-    val searchQuery = savedStateHandle.getStateFlow(key = SEARCH_QUERY, initialValue = "")
+    val searchQuery: StateFlow<String> = savedStateHandle.getStateFlow(key = SEARCH_QUERY, initialValue = "")
 
     @OptIn(ExperimentalCoroutinesApi::class)
     val uiState: StateFlow<FlightSearchUiState> =
         searchQuery.flatMapLatest { query ->
+            // If the search query is blank, show the favorite flights from the datasource
             if (query.isBlank()) {
                 flightsRepository
                     .getFavoriteFlights()
@@ -44,11 +45,12 @@ class FlightSearchViewModel @Inject internal constructor(
                         )
                     }
             } else {
+                // If the Search Query is not Blank, show the flights results from the query
                 val airportsResultsBySearch: Flow<List<Airport>> =
                     airportsRepository.getAirportsResultsBySearch(query)
                 val flightsResults: List<Flight> =
                     flightsRepository.getAllPossibleFlightsFromAirports(airportsResultsBySearch, completeAirportList)
-                        .last()
+                        .first()
                 flowOf(
                     FlightSearchUiState(
                         searchInput = query,
@@ -72,7 +74,7 @@ class FlightSearchViewModel @Inject internal constructor(
         savedStateHandle[SEARCH_QUERY] = searchQuery
     }
 
-    private companion object {
+    internal companion object {
         const val SEARCH_QUERY = "searchQuery"
     }
 

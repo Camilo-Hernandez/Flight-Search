@@ -31,6 +31,7 @@ class FlightTest {
                 expected = listOf(
                     FakeFlightDatasource.flight1,
                     FakeFlightDatasource.flight2,
+                    FakeFlightDatasource.flight3,
                     FakeFlightDatasource.flight4,
                 ),
                 actual = flights
