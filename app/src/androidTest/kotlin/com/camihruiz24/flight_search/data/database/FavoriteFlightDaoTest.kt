@@ -7,7 +7,7 @@ import androidx.test.platform.app.InstrumentationRegistry
 import com.camihruiz24.flight_search.data.repository.fake.FakeAirportDatasource.airportA
 import com.camihruiz24.flight_search.data.repository.fake.FakeAirportDatasource.airportE
 import com.camihruiz24.flight_search.data.repository.fake.FakeFavoriteFlightDatasource
-import com.camihruiz24.flight_search.data.repository.fake.FakeFavoriteFlightDatasource.testFavoriteFlights
+import com.camihruiz24.flight_search.data.repository.fake.FakeFavoriteFlightDatasource.testSomeFavoriteFlights
 import kotlinx.coroutines.flow.first
 import kotlinx.coroutines.runBlocking
 import kotlinx.coroutines.test.runTest
@@ -15,6 +15,7 @@ import org.junit.runner.RunWith
 import kotlin.test.AfterTest
 import kotlin.test.BeforeTest
 import kotlin.test.Test
+import kotlin.test.assertContains
 import kotlin.test.assertEquals
 import kotlin.test.assertIs
 import kotlin.test.assertNotNull
@@ -39,10 +40,12 @@ class FavoriteFlightDaoTest {
 
         favoriteFlightDao = fakeAppDatabase.getFavoriteFlightDao()
 
-        // Added in wrong order to test ordering
+        /** Ordering does not matter due to the primary key of the [FavoriteFlight] class not being created
+         * deterministically */
         favoriteFlightDao.addFlightToFavorites(FakeFavoriteFlightDatasource.favFlight2)
         favoriteFlightDao.addFlightToFavorites(FakeFavoriteFlightDatasource.favFlight4)
         favoriteFlightDao.addFlightToFavorites(FakeFavoriteFlightDatasource.favFlight1)
+        favoriteFlightDao.addFlightToFavorites(FakeFavoriteFlightDatasource.favFlight3)
     }
 
     @AfterTest
@@ -60,34 +63,34 @@ class FavoriteFlightDaoTest {
         assertIs<List<FavoriteFlight>>(search)
         assertNotNull(search)
         assertTrue(search.isNotEmpty())
-        assertEquals(3, search.size) // I added 3 in the setUp
-        assertTrue(search.all { it in testFavoriteFlights })
+        assertEquals(testSomeFavoriteFlights.size, search.size) // I added 3 in the setUp
+        assertTrue(search.all { it in testSomeFavoriteFlights })
     }
 
     @Test
     fun test_addFlightToFavorites() = runTest {
         // Given the flight
-        val favFlight = FavoriteFlight(3, airportE.iataCode, airportA.iataCode)
+        val favFlight = FavoriteFlight(airportE.iataCode, airportA.iataCode)
         // When the DAO inserts the flight in the database
         favoriteFlightDao.addFlightToFavorites(favFlight)
         // Then check the insert is done correctly.
         val currentFlights: List<FavoriteFlight> = favoriteFlightDao.getFavoriteFlights().first()
         assertTrue(favFlight in currentFlights)
-        // The favorite flight is put in order by primary key
-        assertEquals(FakeFavoriteFlightDatasource.favFlight1, currentFlights[0])
-        assertEquals(FakeFavoriteFlightDatasource.favFlight2, currentFlights[1])
-        assertEquals(favFlight, currentFlights[2])
-        assertEquals(FakeFavoriteFlightDatasource.favFlight4, currentFlights[3])
+        assertContains(currentFlights, FakeFavoriteFlightDatasource.favFlight1)
+        assertContains(currentFlights, FakeFavoriteFlightDatasource.favFlight2)
+        assertContains(currentFlights, FakeFavoriteFlightDatasource.favFlight3)
+        assertContains(currentFlights, FakeFavoriteFlightDatasource.favFlight4)
+        assertContains(currentFlights, favFlight)
 
         assertTrue(currentFlights.all {
             it in listOf(
                 FakeFavoriteFlightDatasource.favFlight1,
                 FakeFavoriteFlightDatasource.favFlight2,
+                FakeFavoriteFlightDatasource.favFlight3,
                 FakeFavoriteFlightDatasource.favFlight4,
                 favFlight
             )
         })
-
     }
 
     @Test
@@ -98,12 +101,15 @@ class FavoriteFlightDaoTest {
 
         // Then check the delete is done correctly.
         val currentFlights: List<FavoriteFlight> = favoriteFlightDao.getFavoriteFlights().first()
-        assertEquals(2, currentFlights.size)
+        assertEquals(testSomeFavoriteFlights.size-1, currentFlights.size)
         assertEquals(
-            listOf(
+            /** Given that the primary key of [FavoriteFlight] is non deterministic, it is the best option
+             * to just test for existence rather than existence AND order of the elements in the DB */
+            setOf(
                 FakeFavoriteFlightDatasource.favFlight1,
+                FakeFavoriteFlightDatasource.favFlight3,
                 FakeFavoriteFlightDatasource.favFlight4
-            ), currentFlights
+            ), currentFlights.toSet()
         )
     }
 

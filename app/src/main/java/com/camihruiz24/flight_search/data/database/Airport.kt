@@ -34,11 +34,11 @@ internal fun List<Airport>.toCompleteFlightsList(totalAirports: List<Airport>): 
                 if (airportI.iataCode != airportJ.iataCode)
                     try {
                         Flight(
-                            departureCode = airportI.iataCode,
                             departureName = airportI.name,
                             numberOfPassengers = airportI.passengers,
                             destinationCode = airportJ.iataCode,
-                            destinationName = airportJ.name
+                            destinationName = airportJ.name,
+                            departureCode = airportI.iataCode
                         ).also { flight ->
                             flightList.add(flight)
                         }

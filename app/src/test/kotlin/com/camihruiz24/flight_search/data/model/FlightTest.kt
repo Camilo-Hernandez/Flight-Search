@@ -1,10 +1,10 @@
 package com.camihruiz24.flight_search.data.model
 
-import com.camihruiz24.flight_search.data.repository.fake.FakeFavoriteFlightDatasource
-import com.camihruiz24.flight_search.data.repository.fake.FakeFlightDatasource
 import com.camihruiz24.flight_search.data.database.FavoriteFlight
 import com.camihruiz24.flight_search.data.database.toFlightList
 import com.camihruiz24.flight_search.data.repository.fake.FakeAirportsRepository
+import com.camihruiz24.flight_search.data.repository.fake.FakeFavoriteFlightDatasource
+import com.camihruiz24.flight_search.data.repository.fake.FakeFlightDatasource
 import kotlinx.coroutines.test.runTest
 import kotlin.test.Test
 import kotlin.test.assertEquals
@@ -15,12 +15,14 @@ class FlightTest {
 
     private val fakeAirportsRepository = FakeAirportsRepository()
 
+
+
     @Test
     fun `test toFlightList - Conversion from List of FavoriteFlight to List of Flight is done by extension function`() =
         runTest {
             // Given a list of favorite flights
             val favFlights: List<FavoriteFlight> =
-                FakeFavoriteFlightDatasource.testFavoriteFlights
+                FakeFavoriteFlightDatasource.testSomeFavoriteFlights
             // When converting it to list of flights
             val flights: List<Flight> = favFlights.toFlightList(fakeAirportsRepository)
             // Then check the conversion in done correctly
@@ -36,13 +38,27 @@ class FlightTest {
         }
 
     @Test
-    fun `test toDBModel - Conversion from Flight to FavoriteFlight is done by extension function`() {
-        val flights: List<Flight> = FakeFlightDatasource.testFlights
+    fun `test toDBModel - Five conversions from Flight to FavoriteFlight is done by extension function`() {
+        val fiveFlights: List<Flight> = FakeFlightDatasource.testFlights.take(5)
+        val testFavFlights = FakeFavoriteFlightDatasource.testAllFavoriteFlights
 
-        val favFlights = flights.map { it.toDBModel() }
-        // TODO: Complete the test
-//        assertTrue(favFlights.containsAll(FakeFavoriteFlightDatasource.testFavoriteFlights))
-//        assertTrue(FakeFavoriteFlightDatasource.testFavoriteFlights.all { it in favFlights })
+        val favFlights: List<FavoriteFlight> = fiveFlights.map {
+            it.toDBModel()
+        }
+
+        assertEquals(testFavFlights.take(5), favFlights)
+        assertTrue(testFavFlights.all { it in favFlights })
+    }
+
+    @Test
+    fun `test toDBModel - Conversions from Flight to FavoriteFlight is done by extension function`() {
+        val flights: List<Flight> = FakeFlightDatasource.testFlights
+        val testFavFlights = FakeFavoriteFlightDatasource.testAllFavoriteFlights
+
+        val favFlights: List<FavoriteFlight> = flights.map {
+            it.toDBModel()
+        }
+        assertTrue(testFavFlights.all { it in favFlights })
     }
 
 }

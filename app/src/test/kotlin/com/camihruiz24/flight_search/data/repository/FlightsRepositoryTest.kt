@@ -7,8 +7,8 @@ import com.camihruiz24.flight_search.data.repository.fake.FakeAirportDatasource.
 import com.camihruiz24.flight_search.data.repository.fake.FakeAirportsRepository
 import com.camihruiz24.flight_search.data.repository.fake.FakeFavoriteFlightDatasource
 import com.camihruiz24.flight_search.data.repository.fake.FakeFavoriteFlightDatasource.favFlight5
-import com.camihruiz24.flight_search.data.repository.fake.FakeFavoriteFlightDatasource.favFlight6
-import com.camihruiz24.flight_search.data.repository.fake.FakeFavoriteFlightDatasource.testFavoriteFlights
+import com.camihruiz24.flight_search.data.repository.fake.FakeFavoriteFlightDatasource.favFlight3
+import com.camihruiz24.flight_search.data.repository.fake.FakeFavoriteFlightDatasource.testSomeFavoriteFlights
 import com.camihruiz24.flight_search.data.repository.fake.FakeFlightDatasource.testFlights
 import com.camihruiz24.flight_search.data.repository.fake.FakeFlightDatasource.testTwoFlights
 import com.camihruiz24.flight_search.data.repository.fake.FakeFlightsRepository
@@ -99,17 +99,17 @@ class FlightsRepositoryTest {
             flightsRepository.getFavoriteFlights().first() // Returns the first item in the flow
 
         // Then check it's the expected item
-        assertEquals(FakeFavoriteFlightDatasource.testFavoriteFlights, firstItem)
+        assertEquals(testSomeFavoriteFlights, firstItem)
     }
 
     @Test
     fun test_addFlightToFavorites() = runTest {
         // Given a flight
-        val flight = favFlight6
+        val flight = favFlight3
         // When the repository adds it to favorite flights
         flightsRepository.addFlightToFavorites(flight)
         // Then check the flight has been added
-        assertContains(testFavoriteFlights, flight)
+        assertContains(testSomeFavoriteFlights, flight)
     }
 
     @Test
@@ -119,6 +119,6 @@ class FlightsRepositoryTest {
         // When the repository adds it to favorite flights
         flightsRepository.removeFlightFromFavorites(flight)
         // Then check the flight has been added
-        assertFalse(testFavoriteFlights.contains(flight))
+        assertFalse(testSomeFavoriteFlights.contains(flight))
     }
 }

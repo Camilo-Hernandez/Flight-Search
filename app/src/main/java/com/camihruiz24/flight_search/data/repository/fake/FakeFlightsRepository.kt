@@ -5,7 +5,7 @@ import com.camihruiz24.flight_search.data.database.FavoriteFlight
 import com.camihruiz24.flight_search.data.database.toCompleteFlightsList
 import com.camihruiz24.flight_search.data.model.Flight
 import com.camihruiz24.flight_search.data.repository.FlightsRepository
-import com.camihruiz24.flight_search.data.repository.fake.FakeFavoriteFlightDatasource.testFavoriteFlights
+import com.camihruiz24.flight_search.data.repository.fake.FakeFavoriteFlightDatasource.testSomeFavoriteFlights
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.flowOf
 import kotlinx.coroutines.flow.map
@@ -21,14 +21,14 @@ class FakeFlightsRepository @Inject constructor() : FlightsRepository {
         }
 
     override fun getFavoriteFlights(): Flow<List<FavoriteFlight>> {
-        return flowOf(testFavoriteFlights)
+        return flowOf(testSomeFavoriteFlights)
     }
 
     override suspend fun addFlightToFavorites(flight: FavoriteFlight) {
-        if (testFavoriteFlights.all { it.id != flight.id }) testFavoriteFlights.add(flight)
+        if (testSomeFavoriteFlights.all { it.id != flight.id }) testSomeFavoriteFlights.add(flight)
     }
 
     override suspend fun removeFlightFromFavorites(flight: FavoriteFlight) {
-        testFavoriteFlights.remove(flight)
+        testSomeFavoriteFlights.remove(flight)
     }
 }

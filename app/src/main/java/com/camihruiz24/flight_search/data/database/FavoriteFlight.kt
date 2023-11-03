@@ -10,13 +10,13 @@ import kotlinx.coroutines.flow.first
 
 @Entity(tableName = "favorite")
 data class FavoriteFlight(
-    @PrimaryKey(autoGenerate = true)
-    @ColumnInfo(name = "id")
-    val id: Int,
     @ColumnInfo(name = "departure_code")
     val departureCode: String,
     @ColumnInfo(name = "destination_code")
     val destinationCode: String,
+    @PrimaryKey
+    @ColumnInfo(name = "id")
+    val id: Int = (departureCode + destinationCode).hashCode(),
 ) {
     init {
         require(departureCode != destinationCode)
