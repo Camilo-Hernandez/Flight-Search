@@ -3,4 +3,6 @@
     <string name="back">Back</string>
     <string name="search">Search</string>
     <string name="clear_search_text_content_desc">Clear search text</string>
+    <string name="flight_info">Flight Info</string>
+    <string name="passengers">Passengers</string>
 </resources>

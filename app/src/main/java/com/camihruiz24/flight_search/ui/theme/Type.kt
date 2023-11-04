@@ -25,25 +25,25 @@ val Typography = Typography(
         fontSize = 17.sp,
         lineHeight = 22.sp,
         letterSpacing = 1.sp,
-//        background = Color.White,
+        color = Color.White,
     ),
-    // Hours
+    // Number of passengers
     bodyLarge = TextStyle(
         fontFamily = Quicksand,
         fontWeight = FontWeight.Bold,
         fontSize = 14.sp,
         lineHeight = 22.sp,
         letterSpacing = 0.5.sp,
-//        background = Color(333333)
+        color = Color(333333)
     ),
-    //
+    // Airport name
     bodyMedium = TextStyle(
         fontFamily = Quicksand,
         fontWeight = FontWeight.Bold,
         fontSize = 12.sp,
         lineHeight = 22.sp,
         letterSpacing = 0.5.sp,
-//        background = Color(333333)
+        color = Color(333333)
     ),
     // AITA code
     bodySmall = TextStyle(
@@ -60,9 +60,9 @@ val Typography = Typography(
         fontSize = 12.sp,
         lineHeight = 16.sp,
         letterSpacing = 0.5.sp,
-//        background = Color(555555)
+        color = Color(555555)
     ),
-    // Flight Info
+    // Flight Info label
     labelMedium = TextStyle(
         fontFamily = Quicksand,
         fontWeight = FontWeight.Medium,
@@ -70,15 +70,14 @@ val Typography = Typography(
         lineHeight = 16.sp,
         letterSpacing = 0.5.sp,
     ),
-    // Days left
+    // Passengers
     labelSmall = TextStyle(
         fontFamily = Quicksand,
         fontWeight = FontWeight.Medium,
         fontSize = 10.sp,
         lineHeight = 22.sp,
         letterSpacing = 0.5.sp,
-//        background = Color(0xFFEB5757)
+        color = Color(0xFFEB5757)
     ),
-
 
 )
