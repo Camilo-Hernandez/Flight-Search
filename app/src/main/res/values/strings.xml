@@ -5,4 +5,9 @@
     <string name="clear_search_text_content_desc">Clear search text</string>
     <string name="flight_info">Flight Info</string>
     <string name="passengers">Passengers</string>
+    <string name="numStops">%1$s Stops</string>
+    <string name="flight_duration">%1$dh %2$dm</string>
+    <string name="remove_from_favorites">Remove from Favorites</string>
+    <string name="add_to_favorites">Add to Favorites</string>
+    <string name="flight_results">%1$s flight results</string>
 </resources>

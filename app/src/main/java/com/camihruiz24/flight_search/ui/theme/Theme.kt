@@ -4,6 +4,7 @@ import android.app.Activity
 import android.os.Build
 import android.view.View
 import androidx.compose.foundation.isSystemInDarkTheme
+import androidx.compose.material3.ColorScheme
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.darkColorScheme
 import androidx.compose.material3.dynamicDarkColorScheme
@@ -21,7 +22,7 @@ import androidx.core.view.WindowCompat
 fun FlightSearchTheme(
     darkTheme: Boolean = isSystemInDarkTheme(),
     // Dynamic color is available on Android 12+
-    dynamicColor: Boolean = true,
+    dynamicColor: Boolean = false,
     content: @Composable () -> Unit
 ) {
     val colorScheme = when {
@@ -36,7 +37,7 @@ fun FlightSearchTheme(
     val view = LocalView.current
     if (!view.isInEditMode) {
         SideEffect {
-            setUpEdgeToEdge(view, darkTheme)
+            doNotSetUpEdgeToEdge(view, colorScheme, darkTheme)
         }
     }
 
@@ -48,6 +49,15 @@ fun FlightSearchTheme(
     )
 }
 
+private fun doNotSetUpEdgeToEdge(
+    view: View,
+    colorScheme: ColorScheme,
+    darkTheme: Boolean
+) {
+    val window = (view.context as Activity).window
+    window.statusBarColor = colorScheme.primary.toArgb()
+    WindowCompat.getInsetsController(window, view).isAppearanceLightStatusBars = darkTheme
+}
 
 /**
  * Sets up edge-to-edge for the window of this [view]. The system icon colors are set to either

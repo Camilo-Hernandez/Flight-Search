@@ -1,7 +1,6 @@
 package com.camihruiz24.flight_search.ui.theme
 
 import androidx.compose.material3.Typography
-import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.text.TextStyle
 import androidx.compose.ui.text.font.Font
 import androidx.compose.ui.text.font.FontFamily
@@ -25,7 +24,6 @@ val Typography = Typography(
         fontSize = 17.sp,
         lineHeight = 22.sp,
         letterSpacing = 1.sp,
-        color = Color.White,
     ),
     // Number of passengers
     bodyLarge = TextStyle(
@@ -34,7 +32,6 @@ val Typography = Typography(
         fontSize = 14.sp,
         lineHeight = 22.sp,
         letterSpacing = 0.5.sp,
-        color = Color(333333)
     ),
     // Airport name
     bodyMedium = TextStyle(
@@ -43,7 +40,6 @@ val Typography = Typography(
         fontSize = 12.sp,
         lineHeight = 22.sp,
         letterSpacing = 0.5.sp,
-        color = Color(333333)
     ),
     // AITA code
     bodySmall = TextStyle(
@@ -60,7 +56,6 @@ val Typography = Typography(
         fontSize = 12.sp,
         lineHeight = 16.sp,
         letterSpacing = 0.5.sp,
-        color = Color(555555)
     ),
     // Flight Info label
     labelMedium = TextStyle(
@@ -77,7 +72,6 @@ val Typography = Typography(
         fontSize = 10.sp,
         lineHeight = 22.sp,
         letterSpacing = 0.5.sp,
-        color = Color(0xFFEB5757)
     ),
 
 )

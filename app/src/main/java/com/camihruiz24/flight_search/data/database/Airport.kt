@@ -23,22 +23,31 @@ data class Airport(
 }
 
 /**
- * Creates a list of flights for every airport given in the DB.
+ * Creates a list of flights for every airport given in [this] (the list of airports).
  * It is assumed that every airport has flights to every other airport in the DB except to itself.
- * [totalAirports] must be given from the [AirportsRepository]
+ * [totalAirports] should be given from the [AirportsRepository]
  */
-internal fun List<Airport>.toCompleteFlightsList(totalAirports: List<Airport>): List<Flight> =
+internal fun List<Airport>.toCompleteFlightsList(
+    totalAirports: List<Airport>,
+    favoriteFlights: List<FavoriteFlight>
+): List<Flight> =
     mutableListOf<Flight>().let { flightList ->
-        this.forEach { airportI ->
-            totalAirports.forEach { airportJ ->
-                if (airportI.iataCode != airportJ.iataCode)
+        this.forEach { departureAirport ->
+            totalAirports.forEach { destinationAirport ->
+                if (departureAirport.iataCode != destinationAirport.iataCode)
                     try {
                         Flight(
-                            departureName = airportI.name,
-                            numberOfPassengers = airportI.passengers,
-                            destinationCode = airportJ.iataCode,
-                            destinationName = airportJ.name,
-                            departureCode = airportI.iataCode
+                            departureName = departureAirport.name,
+                            departureCode = departureAirport.iataCode,
+                            departurePassengers = departureAirport.passengers,
+                            destinationName = destinationAirport.name,
+                            destinationCode = destinationAirport.iataCode,
+                            destinationPassengers = destinationAirport.passengers,
+                            isFavorite = run {
+                                favoriteFlights.any {
+                                    it.id == (departureAirport.iataCode + destinationAirport.iataCode).hashCode()
+                                }
+                            }
                         ).also { flight ->
                             flightList.add(flight)
                         }

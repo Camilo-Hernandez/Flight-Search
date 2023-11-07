@@ -7,13 +7,18 @@ import com.camihruiz24.flight_search.data.database.FavoriteFlight
  */
 data class Flight(
     val departureName: String,
-    val numberOfPassengers: Long,
-    val destinationCode: String,
-    val destinationName: String,
     val departureCode: String,
+    val departurePassengers: Long,
+    val destinationName: String,
+    val destinationCode: String,
+    val destinationPassengers: Long,
+    val isFavorite: Boolean = false,
 ) {
+
     init {
         require(departureCode != destinationCode)
+        require(departureCode.length == 3)
+        require(destinationCode.length == 3)
     }
 
     fun toDBModel(): FavoriteFlight = FavoriteFlight(

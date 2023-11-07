@@ -8,6 +8,7 @@ import com.camihruiz24.flight_search.data.repository.fake.FakeFlightDatasource
 import kotlinx.coroutines.test.runTest
 import kotlin.test.Test
 import kotlin.test.assertEquals
+import kotlin.test.assertFailsWith
 import kotlin.test.assertIs
 import kotlin.test.assertTrue
 
@@ -15,7 +16,22 @@ class FlightTest {
 
     private val fakeAirportsRepository = FakeAirportsRepository()
 
+    @Test
+    fun `test Flight init restriction - departure Code must be different than destination Code`() {
+        assertFailsWith<IllegalArgumentException> {
+            Flight("Name 1", "COD", 3000, "Name 2", "COD", 1230)
+        }
+    }
 
+    @Test
+    fun `test Flight init restriction - departure Code AND destination Code must have length of 3`() {
+        assertFailsWith<IllegalArgumentException> {
+            Flight("Name 1", "COD", 3000, "Name 2", "COD2", 1230)
+        }
+        assertFailsWith<IllegalArgumentException> {
+            Flight("Name 1", "COD1", 3000, "Name 2", "COD", 1230)
+        }
+    }
 
     @Test
     fun `test toFlightList - Conversion from List of FavoriteFlight to List of Flight is done by extension function`() =
@@ -32,7 +48,6 @@ class FlightTest {
                     FakeFlightDatasource.flight1,
                     FakeFlightDatasource.flight2,
                     FakeFlightDatasource.flight3,
-                    FakeFlightDatasource.flight4,
                 ),
                 actual = flights
             )

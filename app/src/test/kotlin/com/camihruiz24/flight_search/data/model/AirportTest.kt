@@ -5,6 +5,7 @@ import com.camihruiz24.flight_search.data.database.toCompleteFlightsList
 import com.camihruiz24.flight_search.data.repository.AirportsRepository
 import com.camihruiz24.flight_search.data.repository.fake.FakeAirportDatasource
 import com.camihruiz24.flight_search.data.repository.fake.FakeAirportsRepository
+import com.camihruiz24.flight_search.data.repository.fake.FakeFavoriteFlightDatasource
 import com.camihruiz24.flight_search.data.repository.fake.FakeFlightDatasource
 import kotlinx.coroutines.ExperimentalCoroutinesApi
 import kotlinx.coroutines.flow.first
@@ -27,13 +28,13 @@ class AirportTest {
     }
 
     @Test
-    fun test_toCompleteFlightsList() {
+    fun `toCompleteFlightsList - the complete list of all possible flights from given airports is done by extension function`() {
         assertEquals(
-            FakeFlightDatasource.testTwoFlights,
+            FakeFlightDatasource.testFlightsFromAAndC,
             listOf(
                 FakeAirportDatasource.airportA,
                 FakeAirportDatasource.airportC,
-            ).toCompleteFlightsList(completeAirportList)
+            ).toCompleteFlightsList(completeAirportList, FakeFavoriteFlightDatasource.testSomeFavoriteFlights)
         )
     }
 

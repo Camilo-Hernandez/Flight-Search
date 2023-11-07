@@ -27,14 +27,16 @@ suspend fun List<FavoriteFlight>.toFlightList(airportsRepository: AirportsReposi
     map { favFlight ->
         val (departureName: String, departurePassengers: Long) =
             airportsRepository.getAirportNameAndPassengersByIataCode(favFlight.departureCode).first()
-        val (destinationName: String, _: Long) =
+        val (destinationName: String, destinationPassengers: Long) =
             airportsRepository.getAirportNameAndPassengersByIataCode(favFlight.destinationCode).first()
         Flight(
-            departureCode = favFlight.departureCode,
             departureName = departureName,
-            numberOfPassengers = departurePassengers,
-            destinationCode = favFlight.destinationCode,
+            departureCode = favFlight.departureCode,
+            departurePassengers = departurePassengers,
             destinationName = destinationName,
+            destinationCode = favFlight.destinationCode,
+            destinationPassengers = destinationPassengers,
+            isFavorite = true
         )
     }
 }

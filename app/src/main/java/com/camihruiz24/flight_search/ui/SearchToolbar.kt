@@ -70,6 +70,10 @@ private fun SearchTextField(
         onSearchTriggered(searchQuery)
     }
 
+    LaunchedEffect(Unit) {
+        focusRequester.requestFocus()
+    }
+
     TextField(
         colors = TextFieldDefaults.colors(
             focusedIndicatorColor = Color.Transparent,
@@ -133,9 +137,6 @@ private fun SearchTextField(
         maxLines = 1,
         singleLine = true,
     )
-    LaunchedEffect(Unit) {
-        focusRequester.requestFocus()
-    }
 }
 
 @Preview(showBackground = true)

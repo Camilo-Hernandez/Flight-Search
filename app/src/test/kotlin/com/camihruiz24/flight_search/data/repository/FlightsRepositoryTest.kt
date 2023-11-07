@@ -5,12 +5,11 @@ import com.camihruiz24.flight_search.data.model.Flight
 import com.camihruiz24.flight_search.data.repository.fake.FakeAirportDatasource
 import com.camihruiz24.flight_search.data.repository.fake.FakeAirportDatasource.testAirports
 import com.camihruiz24.flight_search.data.repository.fake.FakeAirportsRepository
-import com.camihruiz24.flight_search.data.repository.fake.FakeFavoriteFlightDatasource
-import com.camihruiz24.flight_search.data.repository.fake.FakeFavoriteFlightDatasource.favFlight5
 import com.camihruiz24.flight_search.data.repository.fake.FakeFavoriteFlightDatasource.favFlight3
+import com.camihruiz24.flight_search.data.repository.fake.FakeFavoriteFlightDatasource.favFlight5
 import com.camihruiz24.flight_search.data.repository.fake.FakeFavoriteFlightDatasource.testSomeFavoriteFlights
 import com.camihruiz24.flight_search.data.repository.fake.FakeFlightDatasource.testFlights
-import com.camihruiz24.flight_search.data.repository.fake.FakeFlightDatasource.testTwoFlights
+import com.camihruiz24.flight_search.data.repository.fake.FakeFlightDatasource.testFlightsFromAAndC
 import com.camihruiz24.flight_search.data.repository.fake.FakeFlightsRepository
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.first
@@ -49,7 +48,13 @@ class FlightsRepositoryTest {
 
         // When the repository receives the flow and produces a list of all possible flights
         val flightsList: List<Flight> =
-            flightsRepository.getAllPossibleFlightsFromAirports(airportsListFlow, completeAirportList).first()
+            flightsRepository.run {
+                getAllPossibleFlightsFromEachAirport(
+                    airportsListFlow,
+                    completeAirportList,
+                    this.getFavoriteFlights().first()
+                ).first()
+            }
         /**
          * Check the result's size is equal to (n-1)*s, where
          * * n = total number of airports
@@ -57,7 +62,7 @@ class FlightsRepositoryTest {
          */
         assertEquals((testAirports.size - 1) * airportList.size, flightsList.size)
         // Then check all the flights in the test flights list are contained in the result
-        assertEquals(testTwoFlights, flightsList)
+        assertEquals(testFlightsFromAAndC, flightsList)
     }
 
     @Test
@@ -66,7 +71,13 @@ class FlightsRepositoryTest {
         val airportsListFlow: Flow<List<Airport>> = flowOf(testAirports)
         // When the repository receives the flow and produces a flow of a list of all possible flights
         val flightsListFlow: Flow<List<Flight>> =
-            flightsRepository.getAllPossibleFlightsFromAirports(airportsListFlow, completeAirportList)
+            flightsRepository.run {
+                getAllPossibleFlightsFromEachAirport(
+                    airportsListFlow,
+                    completeAirportList,
+                    this.getFavoriteFlights().first()
+                )
+            }
         val flightsList = flightsListFlow.first()
         // Then check all the flights in the test flights list are contained in the result
         assertTrue(testFlights.all { it in flightsList })
@@ -84,7 +95,13 @@ class FlightsRepositoryTest {
         val airportsListFlow: Flow<List<Airport>> = flowOf(emptyList())
         // When the repository receives the flow and produces a flow of a list of all possible flights
         val flightsList: List<Flight> =
-            flightsRepository.getAllPossibleFlightsFromAirports(airportsListFlow, completeAirportList).first()
+            flightsRepository.run {
+                getAllPossibleFlightsFromEachAirport(
+                    airportsListFlow,
+                    completeAirportList,
+                    this.getFavoriteFlights().first()
+                ).first()
+            }
         // Then check non of the flights in the test flights list are contained in the result
         assertFalse(testFlights.any { it in flightsList })
         // And check the result's size is equal to zero

@@ -12,12 +12,13 @@ import kotlinx.coroutines.flow.map
 import javax.inject.Inject
 
 class FakeFlightsRepository @Inject constructor() : FlightsRepository {
-    override fun getAllPossibleFlightsFromAirports(
+    override fun getAllPossibleFlightsFromEachAirport(
         airportsFlow: Flow<List<Airport>>,
         completeAirportList: List<Airport>,
+        favoriteFlights: List<FavoriteFlight>,
     ): Flow<List<Flight>> =
         airportsFlow.map { airportsList ->
-            airportsList.toCompleteFlightsList(completeAirportList)
+            airportsList.toCompleteFlightsList(completeAirportList, favoriteFlights)
         }
 
     override fun getFavoriteFlights(): Flow<List<FavoriteFlight>> {

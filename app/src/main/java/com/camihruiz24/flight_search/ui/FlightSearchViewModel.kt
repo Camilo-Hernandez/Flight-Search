@@ -30,14 +30,14 @@ class FlightSearchViewModel @Inject internal constructor(
 ) : ViewModel() {
     private lateinit var completeAirportList: List<Airport>
     val searchQuery: StateFlow<String> = savedStateHandle.getStateFlow(key = SEARCH_QUERY, initialValue = "")
+    private val favoriteFlightsFlow = flightsRepository.getFavoriteFlights()
 
     @OptIn(ExperimentalCoroutinesApi::class)
     val uiState: StateFlow<FlightSearchUiState> =
         searchQuery.flatMapLatest { query ->
             // If the search query is blank, show the favorite flights from the datasource
             if (query.isBlank()) {
-                flightsRepository
-                    .getFavoriteFlights()
+                favoriteFlightsFlow
                     .mapLatest {
                         FlightSearchUiState(
                             flights = it.toFlightList(airportsRepository)
@@ -48,7 +48,11 @@ class FlightSearchViewModel @Inject internal constructor(
                 val airportsResultsBySearch: Flow<List<Airport>> =
                     airportsRepository.getAirportsResultsBySearch(query)
                 val flightsResults: List<Flight> =
-                    flightsRepository.getAllPossibleFlightsFromAirports(airportsResultsBySearch, completeAirportList)
+                    flightsRepository.getAllPossibleFlightsFromEachAirport(
+                        airportsFlow = airportsResultsBySearch,
+                        completeAirportList = completeAirportList,
+                        favoriteFlights = favoriteFlightsFlow.first(),
+                    )
                         .first()
                 flowOf(
                     FlightSearchUiState(
@@ -71,6 +75,15 @@ class FlightSearchViewModel @Inject internal constructor(
 
     fun onSearchQueryChanged(searchQuery: String) {
         savedStateHandle[SEARCH_QUERY] = searchQuery
+    }
+
+    fun onFavoriteFlightChanged(flight: Flight) {
+        viewModelScope.launch {
+            with(flightsRepository) {
+                if (flight.isFavorite) removeFlightFromFavorites(flight.toDBModel())
+                else addFlightToFavorites(flight.toDBModel())
+            }
+        }
     }
 
     internal companion object {

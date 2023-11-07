@@ -43,7 +43,6 @@ class FavoriteFlightDaoTest {
         /** Ordering does not matter due to the primary key of the [FavoriteFlight] class not being created
          * deterministically */
         favoriteFlightDao.addFlightToFavorites(FakeFavoriteFlightDatasource.favFlight2)
-        favoriteFlightDao.addFlightToFavorites(FakeFavoriteFlightDatasource.favFlight4)
         favoriteFlightDao.addFlightToFavorites(FakeFavoriteFlightDatasource.favFlight1)
         favoriteFlightDao.addFlightToFavorites(FakeFavoriteFlightDatasource.favFlight3)
     }
@@ -63,7 +62,7 @@ class FavoriteFlightDaoTest {
         assertIs<List<FavoriteFlight>>(search)
         assertNotNull(search)
         assertTrue(search.isNotEmpty())
-        assertEquals(testSomeFavoriteFlights.size, search.size) // I added 3 in the setUp
+        assertEquals(testSomeFavoriteFlights.size, search.size)
         assertTrue(search.all { it in testSomeFavoriteFlights })
     }
 
@@ -79,7 +78,6 @@ class FavoriteFlightDaoTest {
         assertContains(currentFlights, FakeFavoriteFlightDatasource.favFlight1)
         assertContains(currentFlights, FakeFavoriteFlightDatasource.favFlight2)
         assertContains(currentFlights, FakeFavoriteFlightDatasource.favFlight3)
-        assertContains(currentFlights, FakeFavoriteFlightDatasource.favFlight4)
         assertContains(currentFlights, favFlight)
 
         assertTrue(currentFlights.all {
@@ -87,7 +85,6 @@ class FavoriteFlightDaoTest {
                 FakeFavoriteFlightDatasource.favFlight1,
                 FakeFavoriteFlightDatasource.favFlight2,
                 FakeFavoriteFlightDatasource.favFlight3,
-                FakeFavoriteFlightDatasource.favFlight4,
                 favFlight
             )
         })
@@ -108,7 +105,6 @@ class FavoriteFlightDaoTest {
             setOf(
                 FakeFavoriteFlightDatasource.favFlight1,
                 FakeFavoriteFlightDatasource.favFlight3,
-                FakeFavoriteFlightDatasource.favFlight4
             ), currentFlights.toSet()
         )
     }
