@@ -1,4 +1,4 @@
-# Flight-Search
+# Flight Search
 Search airports from two pre-populated SQLite databases using Room while watching the result in real time using Kotlin State Flows. The last search query is stored using Preferences DataStore. The UI is done using Jetpack Compose.
 
 This app is fully tested. Besides, the instrumentation tests are done using Hilt and coroutine rules.
