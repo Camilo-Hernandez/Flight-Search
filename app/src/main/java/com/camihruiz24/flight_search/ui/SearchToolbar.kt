@@ -27,6 +27,7 @@ import androidx.compose.ui.input.key.Key
 import androidx.compose.ui.input.key.key
 import androidx.compose.ui.input.key.onKeyEvent
 import androidx.compose.ui.platform.LocalSoftwareKeyboardController
+import androidx.compose.ui.platform.SoftwareKeyboardController
 import androidx.compose.ui.platform.testTag
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.input.ImeAction
@@ -43,14 +44,15 @@ internal fun SearchToolbar(
     searchQuery: String = "",
     onSearchTriggered: (String) -> Unit,
 ) {
+
     Row(
         verticalAlignment = Alignment.CenterVertically,
         modifier = modifier.fillMaxWidth(),
     ) {
         SearchTextField(
             onSearchQueryChanged = onSearchQueryChanged,
-            onSearchTriggered = onSearchTriggered,
             searchQuery = searchQuery,
+            onSearchTriggered = onSearchTriggered,
         )
     }
 }
@@ -62,8 +64,9 @@ private fun SearchTextField(
     searchQuery: String,
     onSearchTriggered: (String) -> Unit,
 ) {
-    val focusRequester = remember { FocusRequester() }
-    val keyboardController = LocalSoftwareKeyboardController.current
+
+    val focusRequester: FocusRequester = remember { FocusRequester() }
+    val keyboardController: SoftwareKeyboardController? = LocalSoftwareKeyboardController.current
 
     val onSearchExplicitlyTriggered = {
         keyboardController?.hide()
@@ -79,6 +82,7 @@ private fun SearchTextField(
             focusedIndicatorColor = Color.Transparent,
             unfocusedIndicatorColor = Color.Transparent,
             disabledIndicatorColor = Color.Transparent,
+            focusedLabelColor = Color.Red,
         ),
         leadingIcon = {
             Icon(
@@ -90,20 +94,19 @@ private fun SearchTextField(
             )
         },
         trailingIcon = {
-            if (searchQuery.isNotEmpty()) {
-                IconButton(
-                    onClick = {
-                        onSearchQueryChanged("")
-                    },
-                ) {
-                    Icon(
-                        imageVector = Icons.Rounded.Close,
-                        contentDescription = stringResource(
-                            id = R.string.clear_search_text_content_desc,
-                        ),
-                        tint = MaterialTheme.colorScheme.onSurface,
-                    )
-                }
+            IconButton(
+                onClick = {
+                    onSearchQueryChanged("")
+                    onSearchTriggered("")
+                },
+            ) {
+                Icon(
+                    imageVector = Icons.Rounded.Close,
+                    contentDescription = stringResource(
+                        id = R.string.clear_search_text_content_desc,
+                    ),
+                    tint = MaterialTheme.colorScheme.onSurface,
+                )
             }
         },
         onValueChange = {
@@ -145,7 +148,6 @@ private fun SearchToolbarPreview() {
     FlightSearchTheme {
         SearchToolbar(
             onSearchQueryChanged = {},
-            onSearchTriggered = {},
-        )
+        ) {}
     }
 }

@@ -15,7 +15,7 @@ object FakeAirportDatasource {
         id = 1, name = "Francisco Sá Carneiro Airport", iataCode = "OPO", passengers = 10
     )
     val airportB = Airport(
-        id = 2, name = "Salamanca To po Airport", iataCode = "SAL", passengers = 20
+        id = 2, name = "Salamanca Airport", iataCode = "SAL", passengers = 20
     )
     val airportC = Airport(
         id = 3, name = "Topo Airport", iataCode = "TOP", passengers = 30
@@ -64,7 +64,7 @@ object FakeFlightDatasource {
         flight9, flight10, flight11, flight12, flight13,
     )
 
-    // This is the collection of total flights departing from airportA and airportC
+    // This is the collection of total flights departing from airportA and airportC, as a result of searching "OPO"
     val testFlightsFromAAndC = listOf(
         flight1, flight5, flight8, flight9, flight10, // departing from airportA, in order of destinations (from B to F)
         flight2, flight6, flight11, flight12, flight13, // departing from airportC, in order of destinations

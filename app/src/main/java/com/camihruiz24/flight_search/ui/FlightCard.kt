@@ -1,7 +1,6 @@
 package com.camihruiz24.flight_search.ui
 
 
-import androidx.compose.foundation.BorderStroke
 import androidx.compose.foundation.Canvas
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
@@ -63,7 +62,7 @@ fun FlightCard(
     Card(
         modifier = modifier,
         colors = CardDefaults.cardColors(containerColor = MaterialTheme.colorScheme.background),
-        border = BorderStroke(1.dp, MaterialTheme.colorScheme.tertiary),
+//        border = BorderStroke(1.dp, MaterialTheme.colorScheme.tertiary),
         shape = MaterialTheme.shapes.medium
     ) {
         Column(

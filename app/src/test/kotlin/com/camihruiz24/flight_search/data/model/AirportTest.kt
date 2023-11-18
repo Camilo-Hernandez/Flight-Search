@@ -14,10 +14,11 @@ import kotlinx.coroutines.test.UnconfinedTestDispatcher
 import org.junit.Test
 import kotlin.test.BeforeTest
 import kotlin.test.assertEquals
+import kotlin.test.assertFailsWith
 
 class AirportTest {
 
-    val repository: AirportsRepository = FakeAirportsRepository()
+    private val repository: AirportsRepository = FakeAirportsRepository()
 
     private lateinit var completeAirportList: List<Airport>
 
@@ -25,6 +26,20 @@ class AirportTest {
     @BeforeTest
     fun setUp() = runBlocking(UnconfinedTestDispatcher()) {
         completeAirportList = repository.getAirportsResultsBySearch("").first()
+    }
+
+    @Test
+    fun `test Airport init restriction - IATA code must have length of 3`() {
+        assertFailsWith<IllegalArgumentException> {
+            Airport(1, "Salamanca Airport", "COD1", 1234)
+        }
+    }
+
+    @Test
+    fun `test Airport init restriction - IATA code must be uppercase`() {
+        assertFailsWith<IllegalArgumentException> {
+            Airport(1, "Salamanca Airport", "Cod", 1234)
+        }
     }
 
     @Test

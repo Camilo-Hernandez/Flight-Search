@@ -16,13 +16,14 @@ import javax.inject.Singleton
 interface FlightsRepository {
 
     /**
-     * Creates a flow of list of [Flight]s given a list of [Airport]s flow and the complete list of airports from the DB
+     * Creates a flow of list of [Flight]s given a list of [Airport]s flow and the complete list of airports
+     * and favorite flights from the DB
      */
     fun getAllPossibleFlightsFromEachAirport(
-        airportsFlow: Flow<List<Airport>>,
+        airports: List<Airport>,
         completeAirportList: List<Airport>,
         favoriteFlights: List<FavoriteFlight>,
-    ): Flow<List<Flight>>
+    ): List<Flight>
 
     /**
      * Retrieve all the [FavoriteFlight]s from the favorite flights table.

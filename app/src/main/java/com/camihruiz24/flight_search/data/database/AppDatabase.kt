@@ -33,7 +33,7 @@ abstract class AppDatabase : RoomDatabase() {
                 )
                     .createFromAsset("database/flight_search.db")
                     // Wipes and rebuilds instead of migrating if no Migration object.
-                    .fallbackToDestructiveMigration()
+//                    .fallbackToDestructiveMigration()
                     .build()
                     .also {
                         Instance = it

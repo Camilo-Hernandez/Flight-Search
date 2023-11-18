@@ -39,21 +39,19 @@ class FlightsRepositoryTest {
 
     @Test
     fun test_getAllPossibleFlightsFromAirports_getFlightsFromTwoAirports() = runTest {
-        // Given a flow of list of 2 airports
+        // Given a list of 2 airports
         val airportList = listOf(
             FakeAirportDatasource.airportA, // iata_code = "OPO"
             FakeAirportDatasource.airportC, // name = "Topo Airport"
         )
-        val airportsListFlow: Flow<List<Airport>> = flowOf(airportList)
-
         // When the repository receives the flow and produces a list of all possible flights
         val flightsList: List<Flight> =
             flightsRepository.run {
                 getAllPossibleFlightsFromEachAirport(
-                    airportsListFlow,
+                    airportList,
                     completeAirportList,
                     this.getFavoriteFlights().first()
-                ).first()
+                )
             }
         /**
          * Check the result's size is equal to (n-1)*s, where
@@ -67,40 +65,38 @@ class FlightsRepositoryTest {
 
     @Test
     fun test_getAllPossibleFlightsFromAirports() = runTest {
-        // Given a list of airports flow
-        val airportsListFlow: Flow<List<Airport>> = flowOf(testAirports)
-        // When the repository receives the flow and produces a flow of a list of all possible flights
-        val flightsListFlow: Flow<List<Flight>> =
+        // Given a list of airports
+        testAirports
+        // When the repository receives the flow of f and produces a list of all possible flights
+        val flightList: List<Flight> =
             flightsRepository.run {
                 getAllPossibleFlightsFromEachAirport(
-                    airportsListFlow,
+                    testAirports,
                     completeAirportList,
                     this.getFavoriteFlights().first()
                 )
             }
-        val flightsList = flightsListFlow.first()
         // Then check all the flights in the test flights list are contained in the result
-        assertTrue(testFlights.all { it in flightsList })
+        assertTrue(testFlights.all { it in flightList })
         /**
          * And check the result's size is equal to (n-1)*s, where
          * * n = total number of airports
          * * s = number of airports in the list flow
          */
-        assertEquals((testAirports.size - 1) * testAirports.size, flightsList.size)
+        assertEquals((testAirports.size - 1) * testAirports.size, flightList.size)
     }
 
     @Test
     fun test_getAllPossibleFlightsFromAirports_getNotASingleAirport() = runTest {
-        // Given an empty list of airports flow
-        val airportsListFlow: Flow<List<Airport>> = flowOf(emptyList())
+        // Given an empty list of airports
         // When the repository receives the flow and produces a flow of a list of all possible flights
         val flightsList: List<Flight> =
             flightsRepository.run {
                 getAllPossibleFlightsFromEachAirport(
-                    airportsListFlow,
+                    emptyList<Airport>(),
                     completeAirportList,
                     this.getFavoriteFlights().first()
-                ).first()
+                )
             }
         // Then check non of the flights in the test flights list are contained in the result
         assertFalse(testFlights.any { it in flightsList })

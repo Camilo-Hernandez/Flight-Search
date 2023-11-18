@@ -6,14 +6,17 @@ import com.camihruiz24.flight_search.data.repository.AirportsRepository
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.flowOf
 import javax.inject.Inject
+import javax.inject.Singleton
 
+@Singleton
 class FakeAirportsRepository @Inject constructor() : AirportsRepository {
     override fun getAirportsResultsBySearch(search: String): Flow<List<Airport>> =
-        // We can delegate the fake production to the fakeDao if we want it
+    // We can delegate the fake production to the fakeDao if we want it
         // airportDao.getAirportsBySearch(search)
         flowOf(
             FakeAirportDatasource.testAirports.filter {
-                it.name.contains(search.trim(), true) || it.iataCode.contains(search.trim(), true)
+                it.name.contains(search.trim(), true) ||
+                        it.iataCode.contains(search.trim(), true)
             }
         )
 

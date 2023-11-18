@@ -20,6 +20,8 @@ data class FavoriteFlight(
 ) {
     init {
         require(departureCode != destinationCode)
+        require(departureCode.length == 3)
+        require(destinationCode.length == 3)
     }
 }
 

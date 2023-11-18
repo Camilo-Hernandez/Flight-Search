@@ -19,6 +19,7 @@ data class Airport(
 ) {
     init {
         require(iataCode.length == 3)
+        require(iataCode == iataCode.uppercase())
     }
 }
 

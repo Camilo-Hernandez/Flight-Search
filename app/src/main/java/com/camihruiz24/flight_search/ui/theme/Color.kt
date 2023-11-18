@@ -2,18 +2,19 @@ package com.camihruiz24.flight_search.ui.theme
 
 import androidx.compose.ui.graphics.Color
 
+val seed = Color(0xFF6760D4)
 
-val md_theme_light_primary = Color(0xFF564EC1)
+val md_theme_light_primary = seed.copy() // Color(0xFF564EC1)
 val md_theme_light_onPrimary = Color(0xFFFFFFFF)
 val md_theme_light_primaryContainer = Color(0xFFE3DFFF)
 val md_theme_light_onPrimaryContainer = Color(0xFF120068)
 val md_theme_light_secondary = Color(0xFF95416E)
 val md_theme_light_onSecondary = Color(0xFFFFFFFF)
-val md_theme_light_secondaryContainer = Color(0xFFFFD8E7)
+val md_theme_light_secondaryContainer = Color(0xFFF0A1C6)
 val md_theme_light_onSecondaryContainer = Color(0xFF3D0027)
 val md_theme_light_tertiary = Color(0xFF9B4428)
 val md_theme_light_onTertiary = Color(0xFFFFFFFF)
-val md_theme_light_tertiaryContainer = Color(0xFFFFDBD0)
+val md_theme_light_tertiaryContainer = Color(0xFFFDC4B3)
 val md_theme_light_onTertiaryContainer = Color(0xFF3A0B00)
 val md_theme_light_error = Color(0xFFBA1A1A)
 val md_theme_light_errorContainer = Color(0xFFFFDAD6)
@@ -62,6 +63,3 @@ val md_theme_dark_inversePrimary = Color(0xFF564EC1)
 val md_theme_dark_surfaceTint = Color(0xFFC4C0FF)
 val md_theme_dark_outlineVariant = Color(0xFF47464F)
 val md_theme_dark_scrim = Color(0xFF000000)
-
-
-val seed = Color(0xFF6760D4)

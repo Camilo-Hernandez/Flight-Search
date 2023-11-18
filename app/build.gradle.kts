@@ -76,6 +76,9 @@ dependencies {
     implementation(libs.room.ktx)
     implementation(libs.room.runtime)
 
+    // Preferences DataStore
+    implementation(libs.androidx.datastore.preferences)
+
     debugImplementation(libs.ui.tooling)
     debugImplementation(libs.ui.test.manifest)
 
@@ -107,4 +110,5 @@ dependencies {
 
     implementation(libs.destinations.animations.core)
     ksp(libs.destinations.ksp)
+
 }

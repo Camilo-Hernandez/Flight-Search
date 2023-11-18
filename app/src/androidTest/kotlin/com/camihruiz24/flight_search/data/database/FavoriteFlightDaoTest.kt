@@ -27,7 +27,6 @@ class FavoriteFlightDaoTest {
     private lateinit var favoriteFlightDao: FavoriteFlightDao
     private lateinit var fakeAppDatabase: AppDatabase
 
-
     @BeforeTest
     fun setUp() = runBlocking {
         val targetContext = InstrumentationRegistry.getInstrumentation().targetContext
@@ -52,18 +51,17 @@ class FavoriteFlightDaoTest {
         fakeAppDatabase.close()
     }
 
-
     @Test
     fun test_getFavoriteFlights() = runTest {
         // When the DAO emits the results of the query
-        val search: List<FavoriteFlight> = favoriteFlightDao.getFavoriteFlights().first()
-        Log.d("Search Query", "$search")
+        val actualFavoriteFlights: List<FavoriteFlight> = favoriteFlightDao.getFavoriteFlights().first()
+        Log.d("Search Query", "$actualFavoriteFlights")
         // Then check the query is done correctly.
-        assertIs<List<FavoriteFlight>>(search)
-        assertNotNull(search)
-        assertTrue(search.isNotEmpty())
-        assertEquals(testSomeFavoriteFlights.size, search.size)
-        assertTrue(search.all { it in testSomeFavoriteFlights })
+        assertIs<List<FavoriteFlight>>(actualFavoriteFlights)
+        assertNotNull(actualFavoriteFlights)
+        assertTrue(actualFavoriteFlights.isNotEmpty())
+        assertEquals(testSomeFavoriteFlights.size, actualFavoriteFlights.size)
+        assertTrue(actualFavoriteFlights.all { it in testSomeFavoriteFlights })
     }
 
     @Test

@@ -8,25 +8,30 @@ import com.camihruiz24.flight_search.data.repository.FlightsRepository
 import com.camihruiz24.flight_search.data.repository.fake.FakeFavoriteFlightDatasource.testSomeFavoriteFlights
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.flowOf
-import kotlinx.coroutines.flow.map
 import javax.inject.Inject
+import javax.inject.Singleton
 
+val testFavoriteFlights = testSomeFavoriteFlights
+
+@Singleton
 class FakeFlightsRepository @Inject constructor() : FlightsRepository {
     override fun getAllPossibleFlightsFromEachAirport(
-        airportsFlow: Flow<List<Airport>>,
+        airports: List<Airport>,
         completeAirportList: List<Airport>,
         favoriteFlights: List<FavoriteFlight>,
-    ): Flow<List<Flight>> =
-        airportsFlow.map { airportsList ->
-            airportsList.toCompleteFlightsList(completeAirportList, favoriteFlights)
-        }
+    ): List<Flight> =
+        airports.toCompleteFlightsList(completeAirportList, favoriteFlights)
 
     override fun getFavoriteFlights(): Flow<List<FavoriteFlight>> {
-        return flowOf(testSomeFavoriteFlights)
+        return flowOf(testFavoriteFlights)
     }
 
     override suspend fun addFlightToFavorites(flight: FavoriteFlight) {
-        if (testSomeFavoriteFlights.all { it.id != flight.id }) testSomeFavoriteFlights.add(flight)
+        if (testFavoriteFlights.all {
+                it.id != flight.id
+            })
+            testFavoriteFlights.add(flight)
+
     }
 
     override suspend fun removeFlightFromFavorites(flight: FavoriteFlight) {
